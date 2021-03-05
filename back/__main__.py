@@ -5,7 +5,27 @@ import tornado.ioloop
 import tornado.web
 from typing import Any
 
+from onepasswordconnectsdk.client import (
+    Client,
+    new_client_from_environment
+)
+
 from tornado.platform.asyncio import AsyncIOMainLoop
+
+class OneConnectInterface():
+    def __init__(self):
+        self.vault_id = "e2x45ok2bxzfdcla3yo5careme"
+        self.client: Client = new_client_from_environment(
+            "http://decode2021.cohix.ca:8080/")
+        # items = client.get_items(vault_id)
+        # for item in items:
+        #     secret_data = client.get_item(item_id=item.id, vault_id=vault_id)
+        #     print(secret_data)
+
+    def check_existence(self, item_id: str):
+        # check if it exists, return bool
+        pass
+
 
 
 class GenerateHandler(tornado.web.RequestHandler):
@@ -88,3 +108,4 @@ def main():
 if __name__ == "__main__":
     AsyncIOMainLoop().install()
     main()
+
