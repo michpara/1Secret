@@ -13,7 +13,7 @@ const LinkPage = () => {
       <br></br>
       <h2>Link</h2>
       <textarea class="input"></textarea>
-      <p>This link will expire in {number} min.</p>
+      <p className="expiration-time">This link will expire in {number} min.</p>
       <br></br>
       <br></br>
       <NavLink exact activeClassName="current" to="/">
