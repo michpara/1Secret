@@ -21,6 +21,7 @@ const Main = () => (
   <Switch>
     <Route exact path="/" component={Home}></Route>
     <Route exact path="/link" component={Link}></Route>
+    <Route exact path="/expired" component={Expired}></Route>
   </Switch>
 );
 
@@ -45,6 +46,12 @@ const Link = () => (
       <LinkPage></LinkPage>
     </div>
     <img src={br} alt="br" class="bottom-right" />
+  </div>
+);
+
+const Expired = () => (
+  <div className="expired">
+    <h1>This link has expired.</h1>
   </div>
 );
 
