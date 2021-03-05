@@ -95,6 +95,16 @@ input {
   outline: none;
 }
 
+.inputNarrow {
+  border-radius: 10px;
+  border-color: #d1dbf5;
+  font-size: 14px;
+  padding: 10px;
+  width: 100%;
+  resize: none;
+  outline: none;
+}
+
 .dropdown {
   border-radius: 5px;
   border-color: #d1dbf5;

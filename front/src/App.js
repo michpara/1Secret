@@ -1,7 +1,7 @@
 import mainImg from "./assets/1secretimg.png";
 import br from "./assets/br.png";
 import logo from "./assets/logo.png";
-import { NavLink, Switch, Route } from "react-router-dom";
+import { NavLink, Switch, Route, useParams } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
@@ -24,9 +24,8 @@ const Main = () => (
     <Route exact path="/" component={Home}></Route>
     <Route exact path="/link" component={Link}></Route>
     <Route exact path="/expired" component={Expired}></Route>
-    <Route exact path="/receivedlink" component={Received}></Route>
-    <Route exact component={PageNotFound}></Route>
-  
+    <Route exact path="/404" component={PageNotFound}></Route>
+    <Route exact path="/receivedlink/:secretId" component={Received}></Route>
   </Switch>
 );
 
@@ -67,13 +66,15 @@ const PageNotFound = () => (
   </div>
 );
 
-const Received = () => (
+const Received = () => {
+  let { secretId } = useParams();
+  return(
   <div>
     <div className="link center">
-      <ReceivedLink></ReceivedLink>
+      <ReceivedLink secretId={secretId}></ReceivedLink>
     </div>
     <img src={br} alt="br" class="bottom-right" />
-  </div>
-);
+  </div>)
+};
 
 export default App;
