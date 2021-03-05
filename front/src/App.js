@@ -63,6 +63,8 @@ const PageNotFound = () => (
   <div className="error">
     <ErrorPage></ErrorPage>
     <p></p>
+  </div>
+);
 
 const Received = () => (
   <div>
