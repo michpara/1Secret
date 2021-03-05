@@ -14,6 +14,7 @@ const Main = () => (
     <Route exact path="/" component={Home}></Route>
     <Route exact path="/link" component={Link}></Route>
     <Route exact path="/expired" component={Expired}></Route>
+    <Route exact path="/viewlink" component={ViewLink}></Route>
   </Switch>
 );
 
@@ -49,6 +50,13 @@ const Link = () => (
 const Expired = () => (
   <div className="expired">
     <h1>This link has expired.</h1>
+  </div>
+);
+
+const ViewLink = () => (
+  <div className="viewlink">
+    <h1>You've received a secret.</h1>
+    <p>Your password will disappear in __ minutes</p>
   </div>
 );
 
