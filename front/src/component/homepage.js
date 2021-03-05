@@ -33,23 +33,20 @@ const HomePage = () => {
 
   return (
     <div>
-      <Card className="box" style={{ "border-radius": "30px" }}>
+      <Card className="box" style={{ "border-radius": "8px" }}>
         <Card.Body>
-          <Card.Title>
-            <h2>Your secret is safe with us.</h2>
-          </Card.Title>
+          <h2 style={{ "font-weight": "900" }}>Your secret is safe with us.</h2>
           <Card.Text>
             <p>
-              Go ahead and share your passwords safely and securely with
-              time-sensitive, shareable links. You control how others can access
-              your shared information outside of 1Password.
+              Control how others can access your shared information outside of
+              1Password with time sensitive, sharable links.
             </p>
             <br></br>
-            <p className="mute-text">Paste your 1Password ShareLink here:</p>
+            <p className="mute-text" style={{ "font-weight": "700" }}>Paste your 1Password ShareLink here:</p>
             <textarea class="input" onChange={changeSharelink}></textarea>
             <br></br>
             <Row style={{ margin: "10px 1px" }}>
-              <p className="mute-text expires-spacing">Expires in: </p>
+              <p className="mute-text expires-spacing" style={{ "font-weight": "700" }}>Expires in: </p>
               <select name="time" class="dropdown" onChange={changeExpireTime}> 
                 <option value={15}>15 min</option>
                 <option value={30}>30 min</option>
