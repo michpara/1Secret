@@ -43,8 +43,12 @@ class GenerateHandler(tornado.web.RequestHandler):
         self.finish(response_error)
         
     def post(self):
-        print("Received a post request")
         pass
+
+    def options(self):
+        print("options")
+        self.set_status(204)
+        self.finish()
 
 class SecretHandler(tornado.web.RequestHandler):
 

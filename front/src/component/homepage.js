@@ -23,7 +23,7 @@ const HomePage = () => {
       link: sharelink, 
       expiry_time: expireTime,
     }
-    let res = await axios.post('http://localhost:8080/api/v1/generate', data);
+    let res = await axios.post('http://localhost:8080/api/v1/generate', JSON.stringify(data));
     // let res = await axios.get('http://localhost:8080/api/v1/secret/1');
 
 
