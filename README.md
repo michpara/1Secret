@@ -61,9 +61,33 @@ TBD
 TBD
 
 <!-- ACKNOWLEDGEMENTS -->
-## Contributors
+## deCODE Contributors
+Lori Chan
+<br>
+Raymond Chen
+<br>
+Jay Dhulia
+<br>
+Braden Ganetsky
+<br>
+Winnie Lam
+<br>
+Ling Lu
+<br>
 Michelle Paradis
-**ADD YOUR NAMES**
+<br>
+Chris Stojanovski
+<br>
+Grace Wu
+<br>
+Kevin Xu
+
+## 1Password Contributors
+Connor Hicks
+<br>
+Jillian Morgan
+<br>
+Patricia Puno
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
