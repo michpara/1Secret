@@ -1,10 +1,18 @@
 import logo from "./logo.svg";
-import "./App.css";
+import mainImg from "./assets/1secretimg.png";
+import br from "./assets/br.png";
 import { NavLink, Switch, Route } from "react-router-dom";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import HomePage from "./component/homepage.js";
+import LinkPage from "./component/linkpage.js";
 
 const App = () => (
   <div className="app">
-    <h1>1Secret</h1>
+    <h1 style={{ "text-align": "center" }}>1Secret</h1>
     <Main />
   </div>
 );
@@ -18,31 +26,26 @@ const Main = () => (
 );
 
 const Home = () => (
-  <div className="home">
-    <h1>Welcome to my portfolio website</h1>
-    <p> Feel free to browse around and learn more about me.</p>
-    <NavLink exact activeClassName="current" to="/link">
-      Generate Link
-    </NavLink>
+  <div className="home center">
+    <Container>
+      <Row>
+        <Col>
+          <HomePage></HomePage>
+        </Col>
+        <Col>
+          <img src={mainImg} alt="main-img" class="mainpage-img center" />
+        </Col>
+      </Row>
+    </Container>
   </div>
 );
 
 const Link = () => (
-  <div className="link">
-    <NavLink exact activeClassName="current" to="/">
-      Generate Another Link
-    </NavLink>
-    <h1>Link</h1>
-    <p>
-      Ipsum dolor dolorem consectetur est velit fugiat. Dolorem provident
-      corporis fuga saepe distinctio ipsam? Et quos harum excepturi dolorum
-      molestias?
-    </p>
-    <p>
-      Ipsum dolor dolorem consectetur est velit fugiat. Dolorem provident
-      corporis fuga saepe distinctio ipsam? Et quos harum excepturi dolorum
-      molestias? 
-    </p>
+  <div>
+    <div className="link center">
+      <LinkPage></LinkPage>
+    </div>
+    <img src={br} alt="br" class="bottom-right" />
   </div>
 );
 
