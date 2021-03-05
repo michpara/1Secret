@@ -12,7 +12,7 @@ import LinkPage from "./component/linkpage.js";
 
 const App = () => (
   <div className="app">
-    <h1 style={{ "text-align": "center" }}>1Secret</h1>
+    <h1 style={{ "text-align": "center"}}>1Secret</h1>
     <Main />
   </div>
 );
