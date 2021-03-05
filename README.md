@@ -15,26 +15,6 @@
   </p>
 </p>
 
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#contributors">Contributors</a></li>
-  </ol>
-</details>
-
 ## About The Project
 
 <img src="images/demo1.png">
@@ -47,18 +27,6 @@ Go ahead and share your passwords safely and securely with time-sensitive, share
 * [React](https://reactjs.org/)
 * [Tornado](https://www.tornadoweb.org/en/stable/)
 * [1Password API](https://www.1password.com/)
-
-## Getting Started 
-
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-TBD
-
-### Installation
-
-TBD
 
 ## Contributors
 
