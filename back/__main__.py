@@ -17,10 +17,10 @@ class OneConnectInterface():
         self.vault_id = "e2x45ok2bxzfdcla3yo5careme"
         self.client: Client = new_client_from_environment(
             "http://decode2021.cohix.ca:8080/")
-        # items = client.get_items(vault_id)
-        # for item in items:
-        #     secret_data = client.get_item(item_id=item.id, vault_id=vault_id)
-        #     print(secret_data)
+        items = self.client.get_items(self.vault_id)
+        for item in items:
+            secret_data = self.client.get_item(item_id=item.id, vault_id=self.vault_id)
+            print(secret_data)
 
     def check_existence(self, item_id: str):
         # check if it exists, return bool
@@ -77,7 +77,7 @@ class NotFoundHandler(GenerateHandler):
 def get_routes():
     routes = [
         (r"/api/v1/generate", GenerateHandler),
-        (r"/api/v1/secret/([a-z0-9]{16})", SecretHandler)
+        (r"/api/v1/secret/([a-z0-9]{32})", SecretHandler)
     ]
     return routes
 
