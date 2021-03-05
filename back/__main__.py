@@ -2,7 +2,10 @@ import asyncio
 import tornado.httputil as httputil
 import tornado.httpserver
 import tornado.ioloop
+import tornado.escape
 import tornado.web
+import urllib.parse
+
 from typing import Any
 
 from onepasswordconnectsdk.client import (
@@ -12,19 +15,30 @@ from onepasswordconnectsdk.client import (
 
 from tornado.platform.asyncio import AsyncIOMainLoop
 
+valid_expiry_times = [
+    15 * 60, # 15 min
+    30 * 60,
+    45 * 60,
+    60 * 60,
+]
+
 class OneConnectInterface():
     def __init__(self):
         self.vault_id = "e2x45ok2bxzfdcla3yo5careme"
         self.client: Client = new_client_from_environment(
             "http://decode2021.cohix.ca:8080/")
-        items = self.client.get_items(self.vault_id)
-        for item in items:
-            secret_data = self.client.get_item(item_id=item.id, vault_id=self.vault_id)
-            print(secret_data)
+        # items = self.client.get_items(self.vault_id)
+        # for item in items:
+        #     secret_data = self.client.get_item(item_id=item.id, vault_id=self.vault_id)
+        #     print(secret_data)
 
-    def check_existence(self, item_id: str):
+    def check_existence(self, vault_id: str, item_id: str):
+        try:
+            self.client.get_item(item_id=item_id, vault_id=vault_id)
+        except Exception:
+            return False
         # check if it exists, return bool
-        pass
+        return True
 
 
 
@@ -42,7 +56,32 @@ class GenerateHandler(tornado.web.RequestHandler):
         self.finish(response_error)
 
     def post(self):
-        print("Received a post request")
+        try:
+            data = tornado.escape.json_decode(self.request.body)
+            expiry_time = data.get("expiry_time", None)
+            if not expiry_time:
+                raise ValueError("Invalid expiry_time")
+
+            # TODO: check expiry time is valid
+            expiry_time = int(expiry_time)
+
+            if expiry_time < 0 or expiry_time not in valid_expiry_times:
+                raise ValueError("Invalid expiry_time")
+
+            link = data.get("link", None)
+            if not link:
+                raise ValueError("Invalid link")
+
+            query_params = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(link).query))
+            item_id = query_params.get("v")
+            vault_id = query_params.get("i")
+            if not one_connect_instance.check_existence(item_id, vault_id):
+                raise ValueError("Invalid link")
+
+        except ValueError as e:
+            self.write_error(status_code=400, message=str(e))
+        except Exception as e:
+            self.write_error(status_code=500, message=str(e))
         pass
 
 
@@ -93,6 +132,7 @@ def make_app():
 
 
 def main():
+    one_connect_instance.check_existence(item_id="12", vault_id="12")
 
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
@@ -104,6 +144,8 @@ def main():
     server.start()
     asyncio.get_event_loop().run_forever()
 
+
+one_connect_instance = OneConnectInterface()
 
 if __name__ == "__main__":
     AsyncIOMainLoop().install()
