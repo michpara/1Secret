@@ -218,7 +218,7 @@ class SecretHandler(tornado.web.RequestHandler):
                 "title": content_item.title,
                 "fields": content_item.to_dict()['fields'],
                 "expiry_time": item_attributes['expires'],
-                "creation_time": int(content_item.created_at.timestamp()),
+                "creation_time": int(item.created_at.timestamp()),
             })
 
         except Exception:
