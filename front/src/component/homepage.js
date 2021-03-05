@@ -47,7 +47,7 @@ const HomePage = () => {
             </p>
             <br></br>
             <p className="mute-text" style={{ "font-weight": "700" }}>Paste your 1Password ShareLink here:</p>
-            <textarea class="input" onChange={changeSharelink}></textarea>
+            <textarea class="input" onChange={changeSharelink} placeholder="Paste link here..."></textarea>
             <br></br>
             <Row style={{ margin: "10px 1px" }}>
               <p className="mute-text expires-spacing" style={{ "font-weight": "700" }}>Expires in: </p>
@@ -62,6 +62,7 @@ const HomePage = () => {
           </Card.Text>
             <Button
               variant="primary"
+              disabled={sharelink === "" ? true : false}
               style={{
                 "border-radius": "50px",
                 padding: "10px 50px",
