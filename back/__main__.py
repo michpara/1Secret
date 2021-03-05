@@ -26,6 +26,25 @@ class GenerateHandler(tornado.web.RequestHandler):
         pass
 
 
+class SecretHandler(tornado.web.RequestHandler):
+
+    def set_default_headers(self) -> None:
+        self.set_header("Content-Type", "application/json")
+
+    def write_error(self, status_code: int, **kwargs: Any) -> None:
+        self.set_header("Content-Type", "application/problem+json")
+        title = httputil.responses.get(status_code, "Unknown")
+        message = kwargs.get("message", self._reason)
+        self.set_status(status_code)
+        response_error = {"status": status_code, "title": title, "message": message}
+        self.finish(response_error)
+
+    def get(self, secret_id):
+        print("Received a get request for {secret}".format(secret=secret_id))
+        pass
+
+
+
 class NotFoundHandler(GenerateHandler):
     """
     Base handler for all invalid routes
@@ -37,7 +56,8 @@ class NotFoundHandler(GenerateHandler):
 
 def get_routes():
     routes = [
-        (r"/api/generate", GenerateHandler),
+        (r"/api/v1/generate", GenerateHandler),
+        (r"/api/v1/secret/([a-z0-9]{16})", SecretHandler)
     ]
     return routes
 
