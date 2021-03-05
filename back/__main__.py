@@ -192,7 +192,10 @@ class SecretHandler(tornado.web.RequestHandler):
             if not content_item:
                 raise ValueError()
 
-            self.write(json.dumps(content_item.to_dict()['fields']))
+            self.write({
+                "title": content_item.title,
+                "fields": content_item.to_dict()['fields']
+            })
 
         except Exception:
             self.write_error(status_code=404, message="Invalid")
