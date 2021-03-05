@@ -2,31 +2,29 @@ import { NavLink } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
 import Timer from "react-compound-timer";
-import React from "react";
-
-
-let number = 25;
-let value = 100000000;
-let init = 10000000000;
 
 const LinkPage = (props) => {
+  const currTime = (new Date).getTime();
+  let remainingTime = (props.data.expiry_time * 1000) - currTime;
+  const url = `/receivedlink/${props.data.id}`
   return (
     <div>
       <p className="mute-text"  style={{ "font-weight": "700" }}> 
-        <Timer     initialTime={value}
+        <Timer     initialTime={remainingTime}
           direction="backward" lastUnit="m">
           <Timer.Minutes /> 
         </Timer> min left </p>
         
-      <ProgressBar animated now={value} />
+      <ProgressBar animated now={remainingTime} />
       <br></br>
       <h2 style={{ "font-weight": "700" }}>
         Your 1Secret Link is ready to share
       </h2>
-      <textarea class="input"></textarea>
+      <textarea class="input">{url}</textarea>
       <p className="expiration-time">This link will expire in <span> </span>
-        <Timer     initialTime={value}
+        <Timer     initialTime={remainingTime}
           direction="backward" lastUnit="m">
           
           <Timer.Minutes /> minutes <span> </span>
