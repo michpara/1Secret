@@ -20,6 +20,7 @@ import onepasswordconnectsdk.models
 from onepasswordconnectsdk.models import FullItemAllOfFields
 
 from tornado.platform.asyncio import AsyncIOMainLoop
+import tornado.ioloop
 
 import json
 
@@ -39,8 +40,6 @@ class OneConnectInterface():
         self.notes_vault_id = "vlgdgyczs2parhhs2aw3ihpclq"
         self.client: Client = new_client_from_environment(
             "http://decode2021.cohix.ca:8080/")
-        
-        print(self.client.get_items(self.notes_vault_id))
 
     def check_existence(self, vault_id: str, item_id: str):
         try:
@@ -89,6 +88,14 @@ class OneConnectInterface():
 
         except Exception:
             return False
+
+    def delete_expired(self):
+        notes = self.client.get_items(self.notes_vault_id)
+        for note in notes:
+            secret_data = self.client.get_item(note.id, self.notes_vault_id)
+            note_attributes = json.loads(secret_data.fields[0].value)
+            if int(time.time()) > note_attributes['expires']:
+                self.client.delete_item(note.id, self.notes_vault_id)
 
 class GenerateHandler(tornado.web.RequestHandler):
 
@@ -209,15 +216,6 @@ def make_app():
     )
     return app
 
-def delete_expired(self, vault_id):
-    print("hi")
-    notes = self.client.get_items(self.notes_vault_id)
-    for note in notes:
-        secret_data = self.client.get_item(note.id, self.notes_vault_id)
-        note_attributes = json.loads(secret_data.fields[0].value)
-        print(time.time())
-        if int(time.time()) > note_attributes['expires']:
-            self.client.delete_item(note.id, self.notes_vault_id)
 def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
@@ -225,8 +223,8 @@ def main():
     port = 8080
     if port:
         server.bind(port)
-
     server.start()
+    tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, 5000).start()
     asyncio.get_event_loop().run_forever()
 
 one_connect_instance = OneConnectInterface()
