@@ -18,7 +18,7 @@ input {
   border-color: #d1dbf5;
   border-style: solid;
   font-size: 14px;
-  padding: 0 15px;
+  padding: 0 20px;
   width: 100%;
   height: 60px;
   resize: none;
@@ -102,6 +102,15 @@ input {
   padding: 5px 10px;
   outline: none;
   cursor: pointer;
+}
+
+.copy {
+  background-color: white;
+  color: #0572EC;
+  font-size: 20px;
+  position: fixed;
+  right: 25px;
+  bottom: 128px;
 }
 
 .mainpage-img {

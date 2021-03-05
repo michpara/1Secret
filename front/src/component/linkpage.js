@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faCopy } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import Timer from "react-compound-timer";
 
@@ -23,7 +23,19 @@ const LinkPage = (props) => {
       <h2 style={{ "font-weight": "700" }}>
         Your 1Secret Link is ready to share
       </h2>
-      <input value={url}></input>
+
+      <div>
+        <div
+          onClick={() => {
+            navigator.clipboard.writeText(url);
+          }}
+          class="copy"
+        >
+          <FontAwesomeIcon icon={faCopy} />
+        </div>
+        <input value={url}></input>
+      </div>
+
       <p className="expiration-time">
         This link will expire in <span> </span>
         <Timer initialTime={remainingTime} direction="backward" lastUnit="m">
