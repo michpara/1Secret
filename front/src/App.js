@@ -1,5 +1,6 @@
 import mainImg from "./assets/1secretimg.png";
 import br from "./assets/br.png";
+import logo from "./assets/logo.png";
 import { NavLink, Switch, Route } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,10 +9,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HomePage from "./component/homepage.js";
 import LinkPage from "./component/linkpage.js";
+import ErrorPage from "./component/errorpage.js";
 
 const App = () => (
   <div className="app">
-    <h1 style={{ "text-align": "center"}}>1Secret</h1>
+    <img src={logo} alt="1Secret" class="logo" />
     <Main />
   </div>
 );
@@ -21,6 +23,7 @@ const Main = () => (
     <Route exact path="/" component={Home}></Route>
     <Route exact path="/link" component={Link}></Route>
     <Route exact path="/expired" component={Expired}></Route>
+    <Route exact path="/404" component={PageNotFound}></Route>
   </Switch>
 );
 
@@ -51,6 +54,13 @@ const Link = () => (
 const Expired = () => (
   <div className="expired">
     <h1>This link has expired.</h1>
+  </div>
+);
+
+const PageNotFound = () => (
+  <div className="error">
+    <ErrorPage></ErrorPage>
+    <p></p>
   </div>
 );
 
