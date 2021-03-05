@@ -8,7 +8,7 @@ import Timer from "react-compound-timer";
 const LinkPage = (props) => {
   const currTime = (new Date).getTime();
   let remainingTime = (props.data.expiry_time * 1000) - currTime;
-  const url = `/receivedlink/${props.data.id}`
+  const url = `http://localhost:3000/receivedlink/${props.data.id}`
   return (
     <div>
       <p className="mute-text"  style={{ "font-weight": "700" }}> 
