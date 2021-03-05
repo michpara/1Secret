@@ -24,8 +24,9 @@ const Main = () => (
     <Route exact path="/" component={Home}></Route>
     <Route exact path="/link" component={Link}></Route>
     <Route exact path="/expired" component={Expired}></Route>
-    <Route exact path="/404" component={PageNotFound}></Route>
     <Route exact path="/receivedlink" component={Received}></Route>
+    <Route exact component={PageNotFound}></Route>
+  
   </Switch>
 );
 
