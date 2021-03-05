@@ -168,7 +168,8 @@ class GenerateHandler(tornado.web.RequestHandler):
             stored_item, exp_time = one_connect_instance.create_item(vault_id, item_id, expiry_time)
             self.finish({
                     "id": stored_item.id,
-                    "expiry_time": exp_time
+                    "expiry_time": exp_time,
+                    "creation_time": int(stored_item.created_at.timestamp()),
                 })
 
         except ValueError as e:
@@ -215,7 +216,9 @@ class SecretHandler(tornado.web.RequestHandler):
 
             self.write({
                 "title": content_item.title,
-                "fields": content_item.to_dict()['fields']
+                "fields": content_item.to_dict()['fields'],
+                "expiry_time": item_attributes['expires'],
+                "creation_time": int(content_item.created_at.timestamp()),
             })
 
         except Exception:
@@ -252,7 +255,7 @@ def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
 
-    delete_timer = 5000
+    delete_timer = 10000
     port = 8080
 
     if port:
