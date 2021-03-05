@@ -63,8 +63,16 @@ class OneConnectInterface():
             return item
         except Exception:
             return None
-
-
+        
+    def delete_expired(self, vault_id):
+        notes = self.client.get_items(self.notes_vault_id)
+        for note in notes:
+            secret_data = self.client.get_item(note.id, self.notes_vault_id)
+            note_attributes = json.loads(secret_data.fields[0].value)
+            print(time.time())
+            if int(time.time()) > note_attributes['expires']:
+                self.client.delete_item(note.id, self.notes_vault_id)
+                
     def create_item(self, vault_id: str, item_id: str, exp: int):
         exp_time = int(time.time()) + exp
 
@@ -209,15 +217,6 @@ def make_app():
     )
     return app
 
-def delete_expired(self, vault_id):
-    print("hi")
-    notes = self.client.get_items(self.notes_vault_id)
-    for note in notes:
-        secret_data = self.client.get_item(note.id, self.notes_vault_id)
-        note_attributes = json.loads(secret_data.fields[0].value)
-        print(time.time())
-        if int(time.time()) > note_attributes['expires']:
-            self.client.delete_item(note.id, self.notes_vault_id)
 def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
