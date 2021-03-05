@@ -16,10 +16,13 @@ from onepasswordconnectsdk.client import (
 from tornado.platform.asyncio import AsyncIOMainLoop
 
 valid_expiry_times = [
-    15 * 60, # 15 min
+    0.5 * 60, # 30 seconds
+    15 * 60,
     30 * 60,
-    45 * 60,
-    60 * 60,
+    1 * 60 * 60,
+    6 * 60 * 60,
+    12 * 60 * 60,
+    24 * 60 * 60,
 ]
 
 class OneConnectInterface():
@@ -63,7 +66,6 @@ class GenerateHandler(tornado.web.RequestHandler):
             if not expiry_time:
                 raise ValueError("Invalid expiry_time")
 
-            # TODO: check expiry time is valid
             expiry_time = int(expiry_time)
 
             if expiry_time < 0 or expiry_time not in valid_expiry_times:
