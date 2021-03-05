@@ -25,7 +25,7 @@ const HomePage = () => {
               <p className="mute-text expires-spacing">Expires in: </p>
               <select name="time" class="dropdown">
                 <option>15 mins</option>
-                <option>30 min</option>
+                <option>30 mins</option>
                 <option>1 hour</option>
                 <option>3 hours</option>
                 <option>6 hours</option>
