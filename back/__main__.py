@@ -1,5 +1,9 @@
-import time
+from tornado.platform.asyncio import AsyncIOMainLoop
+from onepasswordconnectsdk.models import FullItemAllOfFields
+from typing import Any
+
 import asyncio
+import onepasswordconnectsdk.models
 import tornado.httputil as httputil
 import tornado.httpserver
 import tornado.ioloop
@@ -9,23 +13,15 @@ import urllib.parse
 import json
 import time
 
-from typing import Any
 
 from onepasswordconnectsdk.client import (
     Client,
     new_client_from_environment
 )
 
-import onepasswordconnectsdk.models
-from onepasswordconnectsdk.models import FullItemAllOfFields
-
-from tornado.platform.asyncio import AsyncIOMainLoop
-import tornado.ioloop
-
-import json
 
 valid_expiry_times = [
-    0.5 * 60, # 30 seconds
+    0.5 * 60,
     15 * 60,
     30 * 60,
     1 * 60 * 60,
@@ -105,6 +101,7 @@ class OneConnectInterface():
             if int(time.time()) > note_attributes['expires']:
                 self.client.delete_item(note.id, self.notes_vault_id)
 
+
 class GenerateHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self) -> None:
@@ -160,6 +157,7 @@ class GenerateHandler(tornado.web.RequestHandler):
         print("options")
         self.set_status(204)
         self.finish()
+
 
 class SecretHandler(tornado.web.RequestHandler):
 
@@ -228,11 +226,13 @@ def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
 
+    delete_timer = 5000
     port = 8080
+
     if port:
         server.bind(port)
     server.start()
-    tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, 5000).start()
+    tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, delete_timer).start()
     asyncio.get_event_loop().run_forever()
 
 one_connect_instance = OneConnectInterface()
