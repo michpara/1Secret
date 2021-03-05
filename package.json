@@ -8,7 +8,8 @@
     "server": "python3 back/__main__.py",
     "client": "npm start --prefix front",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "install": "pip install -r back/requirements.txt"
+    "client-install": "npm --prefix ./front install",
+    "install": "npm run client-install && pip install -r back/requirements.txt"
   },
   "repository": {
     "type": "git",
