@@ -1,5 +1,9 @@
-import time
+from tornado.platform.asyncio import AsyncIOMainLoop
+from onepasswordconnectsdk.models import FullItemAllOfFields
+from typing import Any
+
 import asyncio
+import onepasswordconnectsdk.models
 import tornado.httputil as httputil
 import tornado.httpserver
 import tornado.ioloop
@@ -9,23 +13,15 @@ import urllib.parse
 import json
 import time
 
-from typing import Any
 
 from onepasswordconnectsdk.client import (
     Client,
     new_client_from_environment
 )
 
-import onepasswordconnectsdk.models
-from onepasswordconnectsdk.models import FullItemAllOfFields
-
-from tornado.platform.asyncio import AsyncIOMainLoop
-import tornado.ioloop
-
-import json
 
 valid_expiry_times = [
-    0.5 * 60, # 30 seconds
+    0.5 * 60,
     15 * 60,
     30 * 60,
     1 * 60 * 60,
@@ -42,6 +38,13 @@ class OneConnectInterface():
             "http://decode2021.cohix.ca:8080/")
 
     def check_existence(self, vault_id: str, item_id: str):
+        """
+        Determines if a given item and vault pairing exist
+        :param vault_id: alpha-numeric string of 1connect vault
+        :param item_id: alpha-numeric string of 1connect item
+        :return: boolean representing if pairing exists
+        """
+
         try:
             self.client.get_item(item_id=item_id, vault_id=vault_id)
         except Exception:
@@ -50,6 +53,13 @@ class OneConnectInterface():
         return True
 
     def get_item(self, vault_id: str, item_id: str):
+        """
+        Given a vault and item pair returns given item
+        :param vault_id: alpha-numeric string of 1connect vault
+        :param item_id: alpha-numeric string of 1connect item
+        :return: FullItem object of item or None if error
+        """
+
         try:
             item = self.client.get_item(item_id=item_id, vault_id=vault_id)
         except Exception:
@@ -57,22 +67,26 @@ class OneConnectInterface():
         return item
 
     def get_secure_note(self, item_title: str):
+        """
+        Given a vault and item pair returns secure note object
+        :param item_title: title of item in vault
+        :return: FullItem object of item or None if error
+        """
         try:
             item = self.client.get_item(item_id=item_title, vault_id=self.notes_vault_id)
             return item
         except Exception:
             return None
-        
-    def delete_expired(self, vault_id):
-        notes = self.client.get_items(self.notes_vault_id)
-        for note in notes:
-            secret_data = self.client.get_item(note.id, self.notes_vault_id)
-            note_attributes = json.loads(secret_data.fields[0].value)
-            print(time.time())
-            if int(time.time()) > note_attributes['expires']:
-                self.client.delete_item(note.id, self.notes_vault_id)
                 
     def create_item(self, vault_id: str, item_id: str, exp: int):
+        """
+        Creates a secure note object storing the item_id, vault_id, and expiry time
+        Where expiry time is the current time + expiry
+        :param vault_id: alpha-numeric string of 1connect vault
+        :param item_id: alpha-numeric string of 1connect item
+        :param exp: representation in seconds of expiry time
+        :return: FullItem object if successfully stored, else False
+        """
         exp_time = int(time.time()) + exp
 
         try:
@@ -98,12 +112,18 @@ class OneConnectInterface():
             return False
 
     def delete_expired(self):
+        """
+        A synchronous task scanning vault every delete_timer time looking for expired items
+        and clearing them out
+        :return: void
+        """
         notes = self.client.get_items(self.notes_vault_id)
         for note in notes:
             secret_data = self.client.get_item(note.id, self.notes_vault_id)
             note_attributes = json.loads(secret_data.fields[0].value)
             if int(time.time()) > note_attributes['expires']:
                 self.client.delete_item(note.id, self.notes_vault_id)
+
 
 class GenerateHandler(tornado.web.RequestHandler):
 
@@ -160,6 +180,7 @@ class GenerateHandler(tornado.web.RequestHandler):
         print("options")
         self.set_status(204)
         self.finish()
+
 
 class SecretHandler(tornado.web.RequestHandler):
 
@@ -231,11 +252,13 @@ def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
 
+    delete_timer = 5000
     port = 8080
+
     if port:
         server.bind(port)
     server.start()
-    tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, 5000).start()
+    tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, delete_timer).start()
     asyncio.get_event_loop().run_forever()
 
 one_connect_instance = OneConnectInterface()
