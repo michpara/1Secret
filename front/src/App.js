@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HomePage from "./component/homepage.js";
 import LinkPage from "./component/linkpage.js";
+import ReceivedLink from "./component/receivedlink.js";
 
 const App = () => (
   <div className="app">
@@ -21,6 +22,7 @@ const Main = () => (
     <Route exact path="/" component={Home}></Route>
     <Route exact path="/link" component={Link}></Route>
     <Route exact path="/expired" component={Expired}></Route>
+    <Route exact path="/receivedlink" component={Received}></Route>
   </Switch>
 );
 
@@ -51,6 +53,16 @@ const Link = () => (
 const Expired = () => (
   <div className="expired">
     <h1>This link has expired.</h1>
+  </div>
+);
+
+
+const Received = () => (
+  <div>
+    <div className="link center">
+      <ReceivedLink></ReceivedLink>
+    </div>
+    <img src={br} alt="br" class="bottom-right" />
   </div>
 );
 
