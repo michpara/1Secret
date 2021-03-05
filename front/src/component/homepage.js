@@ -32,23 +32,23 @@ const HomePage = () => {
               </select>
             </Row>
           </Card.Text>
-          <Button
-            variant="primary"
-            style={{
-              "border-radius": "50px",
-              padding: "10px 50px",
-              "background-color": "#0572EC",
-            }}
+          <NavLink
+            exact
+            activeClassName="current"
+            to="/link"
+            className="navlink"
           >
-            <NavLink
-              exact
-              activeClassName="current"
-              to="/link"
-              className="navlink"
+            <Button
+              variant="primary"
+              style={{
+                "border-radius": "50px",
+                padding: "10px 50px",
+                "background-color": "#0572EC",
+              }}
             >
               Generate Link
-            </NavLink>
-          </Button>
+            </Button>
+          </NavLink>
         </Card.Body>
       </Card>{" "}
     </div>
