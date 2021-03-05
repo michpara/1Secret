@@ -1,3 +1,4 @@
+import time
 import asyncio
 import tornado.httputil as httputil
 import tornado.httpserver
@@ -5,7 +6,11 @@ import tornado.ioloop
 import tornado.escape
 import tornado.web
 import urllib.parse
+
 import time
+
+import json
+
 
 from typing import Any
 
@@ -62,6 +67,31 @@ class OneConnectInterface():
             return None
 
 
+    def create_item(self, vault_id: str, item_id: str, exp: int):
+        exp_time = time.time() + exp
+
+        try:
+            body = {
+                "item": item_id,
+                "vault": vault_id,
+                "expires": exp_time
+            }
+
+
+            created_item = onepasswordconnectsdk.models.FullItem(
+                                                        title=item_id,
+                                                        category="SECURE_NOTE",
+                                                        fields=[FullItemAllOfFields(value=json.dumps(body),
+                                                                                     purpose="NOTES")]
+                                                        )
+
+            stored_item = self.client.create_item(vault_id=vault_id, item=created_item)
+
+            return stored_item
+
+        except Exception:
+            return False
+
 class GenerateHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self) -> None:
@@ -82,6 +112,7 @@ class GenerateHandler(tornado.web.RequestHandler):
         try:
             data = tornado.escape.json_decode(self.request.body)
             expiry_time = data.get("expiry_time", None)
+
             if not expiry_time:
                 raise ValueError("Invalid expiry_time")
 
@@ -99,6 +130,9 @@ class GenerateHandler(tornado.web.RequestHandler):
             vault_id = query_params.get("i")
             if not one_connect_instance.check_existence(item_id, vault_id):
                 raise ValueError("Invalid link")
+
+            # Will return either the stored_item or false - false will error on next step and go to except
+            stored_item =  one_connect_instance.create_item(vault_id, item_id, expiry_time)
 
         except ValueError as e:
             self.write_error(status_code=400, message=str(e))
@@ -175,8 +209,8 @@ def make_app():
     return app
 
 
-def main():
 
+def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
 
