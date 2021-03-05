@@ -49,7 +49,7 @@ const HomePage = () => {
             <textarea class="input" onChange={changeSharelink}></textarea>
             <br></br>
             <Row style={{ margin: "10px 1px" }}>
-              <p className="mute-text">Expires in: </p>
+              <p className="mute-text expires-spacing">Expires in: </p>
               <select name="time" class="dropdown" onChange={changeExpireTime}> 
                 <option value={15}>15 min</option>
                 <option value={30}>30 min</option>

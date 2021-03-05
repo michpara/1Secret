@@ -2,6 +2,10 @@ html, h1 {
   background-color: #f6fbff;
 }
 
+.expiration-time{
+  position:relative;
+  top:10px;
+}
 .expires-spacing{
   position:relative;
   top:7px;
