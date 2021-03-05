@@ -5,6 +5,7 @@ import tornado.ioloop
 import tornado.escape
 import tornado.web
 import urllib.parse
+import time
 
 from typing import Any
 
@@ -14,6 +15,8 @@ from onepasswordconnectsdk.client import (
 )
 
 from tornado.platform.asyncio import AsyncIOMainLoop
+
+import json
 
 valid_expiry_times = [
     0.5 * 60, # 30 seconds
@@ -28,6 +31,7 @@ valid_expiry_times = [
 class OneConnectInterface():
     def __init__(self):
         self.vault_id = "e2x45ok2bxzfdcla3yo5careme"
+        self.notes_vault_id = "vlgdgyczs2parhhs2aw3ihpclq"
         self.client: Client = new_client_from_environment(
             "http://decode2021.cohix.ca:8080/")
         # items = self.client.get_items(self.vault_id)
@@ -42,6 +46,21 @@ class OneConnectInterface():
             return False
         # check if it exists, return bool
         return True
+
+    def get_item(self, vault_id: str, item_id: str):
+        try:
+            item = self.client.get_item(item_id=item_id, vault_id=vault_id)
+        except Exception:
+            return None
+        return item
+
+    def get_secure_note(self, item_title: str):
+        try:
+            item = self.client.get_item(item_id=item_title, vault_id=self.notes_vault_id)
+            return item
+        except Exception:
+            return None
+
 
 class GenerateHandler(tornado.web.RequestHandler):
 
@@ -109,9 +128,24 @@ class SecretHandler(tornado.web.RequestHandler):
         self.finish(response_error)
 
     def get(self, secret_id):
-        print("Received a get request for {secret}".format(secret=secret_id))
-        pass
 
+        try:
+            item = one_connect_instance.get_secure_note(secret_id)
+            if not item:
+                raise ValueError()
+
+            item_attributes = json.loads(item.fields[0].value)
+            if int(time.time()) > item_attributes['expires']:
+                raise ValueError()
+
+            content_item = one_connect_instance.get_item(item_attributes['vault'], item_attributes['item'])
+            if not content_item:
+                raise ValueError()
+
+            self.write(json.dumps(content_item.to_dict()['fields']))
+
+        except Exception:
+            self.write_error(status_code=404, message="Invalid")
 
 
 class NotFoundHandler(GenerateHandler):
@@ -126,7 +160,7 @@ class NotFoundHandler(GenerateHandler):
 def get_routes():
     routes = [
         (r"/api/v1/generate", GenerateHandler),
-        (r"/api/v1/secret/([a-z0-9]{32})", SecretHandler)
+        (r"/api/v1/secret/([a-z0-9]{26})", SecretHandler)
     ]
     return routes
 
@@ -142,7 +176,6 @@ def make_app():
 
 
 def main():
-    one_connect_instance.check_existence(item_id="12", vault_id="12")
 
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
