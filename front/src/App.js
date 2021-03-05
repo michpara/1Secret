@@ -44,10 +44,10 @@ const Home = () => (
   </div>
 );
 
-const Link = () => (
+const Link = (props) => (
   <div>
     <div className="link center">
-      <LinkPage></LinkPage>
+      <LinkPage data={props.location.state.data}></LinkPage>
     </div>
     <img src={br} alt="br" class="bottom-right" />
   </div>
