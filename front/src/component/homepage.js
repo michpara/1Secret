@@ -4,9 +4,11 @@ import Row from "react-bootstrap/Row";
 import { NavLink } from "react-router-dom";
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const HomePage = () => {
-  const [expireTime, setExpireTime] = useState(15);
+  const history = useHistory();
+  const [expireTime, setExpireTime] = useState(900);
   const [sharelink, setSharelink] = useState("");
 
   const changeExpireTime = (e) => {
@@ -23,12 +25,14 @@ const HomePage = () => {
       link: sharelink, 
       expiry_time: expireTime,
     }
+
     let res = await axios.post('http://localhost:8080/api/v1/generate', JSON.stringify(data));
-    // let res = await axios.get('http://localhost:8080/api/v1/secret/1');
-
-
+    
     let resdata = res.data;
-    console.log(resdata);
+    history.push({
+      pathname: '/link',
+      state: { data: resdata }
+    });
   }
 
   return (
@@ -56,12 +60,6 @@ const HomePage = () => {
               </select>
             </Row>
           </Card.Text>
-          <NavLink
-            exact
-            activeClassName="current"
-            to="/link"
-            className="navlink"
-          >
             <Button
               variant="primary"
               style={{
@@ -73,7 +71,6 @@ const HomePage = () => {
             >
               Generate Link
             </Button>
-          </NavLink>
         </Card.Body>
       </Card>{" "}
     </div>
