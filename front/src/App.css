@@ -19,7 +19,7 @@ input {
   border-style: solid;
   font-size: 14px;
   padding: 0 20px;
-  width: 100%;
+  width: 90%;
   height: 60px;
   resize: none;
   outline: none;
@@ -106,11 +106,21 @@ input {
 
 .copy {
   background-color: white;
+  margin: 15px 15px;
   color: #0572EC;
   font-size: 20px;
-  position: fixed;
-  right: 25px;
-  bottom: 128px;
+}
+
+.copied {
+  border-color: #0572EC;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  background-color: white;
+  color: #0572EC;
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px 0
 }
 
 .mainpage-img {

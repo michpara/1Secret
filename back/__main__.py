@@ -235,7 +235,7 @@ def main():
     if port:
         server.bind(port)
     server.start()
-    tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, 5000).start()
+    #tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, 5000).start()
     asyncio.get_event_loop().run_forever()
 
 one_connect_instance = OneConnectInterface()

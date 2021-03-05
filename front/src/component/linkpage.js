@@ -2,13 +2,22 @@ import { NavLink } from "react-router-dom";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faCopy } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import React, { useState } from 'react';
 import Timer from "react-compound-timer";
+import Row from "react-bootstrap/Row";
 
 const LinkPage = (props) => {
+  const [copied, setCopyStatus] = useState(false);
+
   const currTime = new Date().getTime();
+  const curr = new Intl.DateTimeFormat('en-US').format(currTime)
   let remainingTime = props.data.expiry_time * 1000 - currTime;
   const url = `http://localhost:3000/receivedlink/${props.data.id}`;
+
+  const copyCodeToClipboard = () => {
+    navigator.clipboard.writeText(url);
+    setCopyStatus(true);
+  };
   return (
     <div>
       <p className="mute-text" style={{ "font-weight": "700" }}>
@@ -24,17 +33,17 @@ const LinkPage = (props) => {
         Your 1Secret Link is ready to share
       </h2>
 
-      <div>
+      <Row>
+        <input value={url}></input>
         <div
           onClick={() => {
-            navigator.clipboard.writeText(url);
+            copyCodeToClipboard();
           }}
           class="copy"
         >
           <FontAwesomeIcon icon={faCopy} />
         </div>
-        <input value={url}></input>
-      </div>
+      </Row>
 
       <p className="expiration-time">
         This link will expire in <span> </span>
@@ -54,6 +63,10 @@ const LinkPage = (props) => {
       >
         Generate Another Link <FontAwesomeIcon icon={faChevronRight} />
       </NavLink>
+
+      {copied ? (
+        <div className="copied">Copied at {curr}</div>
+      ) : null}
     </div>
   );
 };
