@@ -5,14 +5,12 @@
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo">
   </a>
 
-  <h3 align="center">1Secret</h3>
+  <h3 align="center">Your secret is safe with us.</h3>
 
   <p align="center">
-    Your secret is safe with us.
-    <br />
     <a href="">View Demo</a>
   </p>
 </p>
@@ -47,9 +45,10 @@ Go ahead and share your passwords safely and securely with time-sensitive, share
 ### Built With
 
 * [React](https://reactjs.org/)
-**ADD MORE**
+* [Tornado](https://www.tornadoweb.org/en/stable/)
+* [1Password API](https://www.1password.com/)
 
-## Getting Started
+## Getting Started 
 
 To get a local copy up and running follow these simple example steps.
 
@@ -74,10 +73,3 @@ Michelle Paradis
 [forks-url]: https://github.com/michpara/1Secret/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
 [stars-url]: https://github.com/michpara/1Secret/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
