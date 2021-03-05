@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import mainImg from "./assets/1secretimg.png";
 import br from "./assets/br.png";
 import { NavLink, Switch, Route } from "react-router-dom";
