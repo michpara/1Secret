@@ -22,9 +22,9 @@ const HomePage = () => {
             <textarea class="input"></textarea>
             <br></br>
             <Row style={{ margin: "10px 1px" }}>
-              <p className="mute-text">Expires in: </p>
+              <p className="mute-text expires-spacing">Expires in: </p>
               <select name="time" class="dropdown">
-                <option>15 min</option>
+                <option>15 mins</option>
                 <option>30 min</option>
                 <option>1 hour</option>
                 <option>3 hours</option>
