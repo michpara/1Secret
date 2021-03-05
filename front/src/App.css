@@ -28,6 +28,10 @@ p {
 .expires-spacing {
   position: relative;
   top: 7px;
+
+.expiration-time{
+  position:relative;
+  top:10px;
 }
 
 .center {

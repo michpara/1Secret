@@ -18,7 +18,7 @@ const LinkPage = () => {
         Your 1Secret Link is ready to share
       </h2>
       <textarea class="input"></textarea>
-      <p>This link will expire in {number} min.</p>
+      <p className="expiration-time">This link will expire in {number} min.</p>
       <br></br>
       <NavLink
         exact
