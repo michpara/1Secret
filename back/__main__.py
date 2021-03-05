@@ -57,7 +57,6 @@ class OneConnectInterface():
 
 
             created_item = onepasswordconnectsdk.models.FullItem(
-                                                        vault=ItemVault(id=vault_id),
                                                         title=item_id,
                                                         category="SECURE_NOTE",
                                                         fields=[FullItemAllOfFields(value=json.dumps(body),
@@ -91,6 +90,7 @@ class GenerateHandler(tornado.web.RequestHandler):
         try:
             data = tornado.escape.json_decode(self.request.body)
             expiry_time = data.get("expiry_time", None)
+
             if not expiry_time:
                 raise ValueError("Invalid expiry_time")
 
