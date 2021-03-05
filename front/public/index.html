@@ -27,8 +27,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,400;0,700;0,900;1,500&display=swap" rel="stylesheet">
     <title>1Secret</title>
+
+    <script language="javascript" type="text/javascript">
+      function clock() {
+      var date = new Date()
+      var hour = date.getHours()
+      var minute = date.getMinutes()
+      var second = date.getSeconds()
+      
+      
+      if (minute < 10) {minute = "0" + minute}
+      if (second < 10) {second = "0" + second}
+      document.title = "[" + minute + " m " + second + " s]" + "1Secret"
+      setTimeout(clock, 1000)
+      }
+      </script>
   </head>
-  <body>
+  <body onLoad="clock()">
+    
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
