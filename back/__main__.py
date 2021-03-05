@@ -19,6 +19,9 @@ from onepasswordconnectsdk.client import (
     new_client_from_environment
 )
 
+import onepasswordconnectsdk.models
+from onepasswordconnectsdk.models import FullItemAllOfFields
+
 from tornado.platform.asyncio import AsyncIOMainLoop
 
 import json
@@ -68,7 +71,7 @@ class OneConnectInterface():
 
 
     def create_item(self, vault_id: str, item_id: str, exp: int):
-        exp_time = time.time() + exp
+        exp_time = int(time.time()) + exp
 
         try:
             body = {
@@ -85,9 +88,9 @@ class OneConnectInterface():
                                                                                      purpose="NOTES")]
                                                         )
 
-            stored_item = self.client.create_item(vault_id=vault_id, item=created_item)
+            stored_item = self.client.create_item(vault_id=self.notes_vault_id, item=created_item)
 
-            return stored_item
+            return stored_item, exp_time
 
         except Exception:
             return False
@@ -126,19 +129,22 @@ class GenerateHandler(tornado.web.RequestHandler):
                 raise ValueError("Invalid link")
 
             query_params = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(link).query))
-            item_id = query_params.get("v")
-            vault_id = query_params.get("i")
-            if not one_connect_instance.check_existence(item_id, vault_id):
+            item_id = query_params.get("i")
+            vault_id = query_params.get("v")
+            if not one_connect_instance.check_existence(vault_id=vault_id, item_id=item_id):
                 raise ValueError("Invalid link")
 
             # Will return either the stored_item or false - false will error on next step and go to except
-            stored_item =  one_connect_instance.create_item(vault_id, item_id, expiry_time)
+            stored_item, exp_time = one_connect_instance.create_item(vault_id, item_id, expiry_time)
+            self.finish({
+                    "id": stored_item.id,
+                    "expiry_time": exp_time
+                })
 
         except ValueError as e:
             self.write_error(status_code=400, message=str(e))
         except Exception as e:
             self.write_error(status_code=500, message=str(e))
-        pass
 
     def options(self):
         print("options")
