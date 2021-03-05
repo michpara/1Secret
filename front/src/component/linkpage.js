@@ -10,7 +10,10 @@ const LinkPage = (props) => {
   const [copied, setCopyStatus] = useState(false);
 
   const currTime = new Date().getTime();
-  const curr = new Intl.DateTimeFormat("en-US").format(currTime);
+  const curr = new Intl.DateTimeFormat("en-US", {
+    hour: 'numeric',
+    minute: 'numeric'
+  }).format(currTime);
   let remainingTime = props.data.expiry_time * 1000 - currTime;
   const url = `http://localhost:3000/receivedlink/${props.data.id}`;
 
