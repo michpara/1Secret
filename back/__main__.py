@@ -5,6 +5,9 @@ import tornado.ioloop
 import tornado.escape
 import tornado.web
 import urllib.parse
+from datetime import datetime
+import json
+import time
 
 from typing import Any
 
@@ -27,13 +30,12 @@ valid_expiry_times = [
 
 class OneConnectInterface():
     def __init__(self):
-        self.vault_id = "e2x45ok2bxzfdcla3yo5careme"
+        self.notes_vault_id = "vlgdgyczs2parhhs2aw3ihpclq"
+
         self.client: Client = new_client_from_environment(
             "http://decode2021.cohix.ca:8080/")
-        # items = self.client.get_items(self.vault_id)
-        # for item in items:
-        #     secret_data = self.client.get_item(item_id=item.id, vault_id=self.vault_id)
-        #     print(secret_data)
+        
+        print(self.client.get_items(self.notes_vault_id))
 
     def check_existence(self, vault_id: str, item_id: str):
         try:
@@ -140,8 +142,18 @@ def make_app():
     )
     return app
 
+def delete_expired(self, vault_id):
+    print("hi")
+    notes = self.client.get_items(self.notes_vault_id)
+    for note in notes:
+        secret_data = self.client.get_item(note.id, self.notes_vault_id)
+        note_attributes = json.loads(secret_data.fields[0].value)
+        print(time.time())
+        if int(time.time()) > note_attributes['expires']:
+            self.client.delete_item(note.id, self.notes_vault_id)
 
 def main():
+
     one_connect_instance.check_existence(item_id="12", vault_id="12")
 
     app = make_app()
@@ -153,7 +165,6 @@ def main():
 
     server.start()
     asyncio.get_event_loop().run_forever()
-
 
 one_connect_instance = OneConnectInterface()
 
