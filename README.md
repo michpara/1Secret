@@ -60,8 +60,9 @@ TBD
 
 TBD
 
-<!-- ACKNOWLEDGEMENTS -->
-## deCODE Contributors
+## Contributors
+
+### deCODE Contributors
 Lori Chan
 <br>
 Raymond Chen
@@ -82,7 +83,7 @@ Grace Wu
 <br>
 Kevin Xu
 
-## 1Password Contributors
+### 1Password Contributors
 Connor Hicks
 <br>
 Jillian Morgan
