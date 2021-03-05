@@ -26,12 +26,13 @@ class OneConnectInterface():
         # check if it exists, return bool
         pass
 
-
-
 class GenerateHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self) -> None:
         self.set_header("Content-Type", "application/json")
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', 'POST, DELETE, OPTIONS')
 
     def write_error(self, status_code: int, **kwargs: Any) -> None:
         self.set_header("Content-Type", "application/problem+json")
@@ -40,16 +41,18 @@ class GenerateHandler(tornado.web.RequestHandler):
         self.set_status(status_code)
         response_error = {"status": status_code, "title": title, "message": message}
         self.finish(response_error)
-
+        
     def post(self):
         print("Received a post request")
         pass
-
 
 class SecretHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self) -> None:
         self.set_header("Content-Type", "application/json")
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 
     def write_error(self, status_code: int, **kwargs: Any) -> None:
         self.set_header("Content-Type", "application/problem+json")
