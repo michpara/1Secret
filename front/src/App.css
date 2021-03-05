@@ -9,6 +9,11 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.mute-text {
+  font-weight: 500;
+  font-size: 14px;
+}
+
 .navlink {
   color: white;
   text-decoration: none;
@@ -20,7 +25,12 @@ body {
 }
 
 .home {
+  width: 100%;
   background-color: #f6fbff;
+}
+
+.link {
+  width: 30%;
 }
 
 .box {
@@ -45,15 +55,15 @@ body {
   padding: 5px 10px;
 }
 
-.white-box {
-  background-color: white;
-}
-
-.home {
-  width: 100%;
-}
-
 .mainpage-img {
   width: 90%;
   height: auto;
+}
+
+.bottom-right {
+  width: 300px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }

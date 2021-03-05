@@ -18,11 +18,11 @@ const HomePage = () => {
               your shared information outside of 1Password.
             </p>
             <br></br>
-            <p>Paste your 1Password ShareLink here</p>
+            <p className="mute-text">Paste your 1Password ShareLink here:</p>
             <textarea class="input"></textarea>
             <br></br>
             <Row style={{ margin: "10px 1px" }}>
-              <p>Expires in: </p>
+              <p className="mute-text">Expires in: </p>
               <select name="time" class="dropdown">
                 <option>15 min</option>
                 <option>30 min</option>
