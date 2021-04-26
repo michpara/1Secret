@@ -1,5 +1,5 @@
 from tornado.platform.asyncio import AsyncIOMainLoop
-from onepasswordconnectsdk.models import FullItemAllOfFields
+from onepasswordconnectsdk.models import Field
 from typing import Any
 
 import asyncio
@@ -13,12 +13,10 @@ import urllib.parse
 import json
 import time
 
-
 from onepasswordconnectsdk.client import (
     Client,
     new_client_from_environment
 )
-
 
 valid_expiry_times = [
     0.5 * 60,
@@ -29,6 +27,7 @@ valid_expiry_times = [
     12 * 60 * 60,
     24 * 60 * 60,
 ]
+
 
 class OneConnectInterface():
     def __init__(self):
@@ -57,7 +56,7 @@ class OneConnectInterface():
         Given a vault and item pair returns given item
         :param vault_id: alpha-numeric string of 1connect vault
         :param item_id: alpha-numeric string of 1connect item
-        :return: FullItem object of item or None if error
+        :return: Field object of item or None if error
         """
 
         try:
@@ -70,14 +69,14 @@ class OneConnectInterface():
         """
         Given a vault and item pair returns secure note object
         :param item_title: title of item in vault
-        :return: FullItem object of item or None if error
+        :return: Field object of item or None if error
         """
         try:
             item = self.client.get_item(item_id=item_title, vault_id=self.notes_vault_id)
             return item
         except Exception:
             return None
-                
+
     def create_item(self, vault_id: str, item_id: str, exp: int):
         """
         Creates a secure note object storing the item_id, vault_id, and expiry time
@@ -85,7 +84,7 @@ class OneConnectInterface():
         :param vault_id: alpha-numeric string of 1connect vault
         :param item_id: alpha-numeric string of 1connect item
         :param exp: representation in seconds of expiry time
-        :return: FullItem object if successfully stored, else False
+        :return: Field object if successfully stored, else False
         """
         exp_time = int(time.time()) + exp
 
@@ -96,13 +95,12 @@ class OneConnectInterface():
                 "expires": exp_time
             }
 
-
-            created_item = onepasswordconnectsdk.models.FullItem(
-                                                        title=item_id,
-                                                        category="SECURE_NOTE",
-                                                        fields=[FullItemAllOfFields(value=json.dumps(body),
-                                                                                     purpose="NOTES")]
-                                                        )
+            created_item = onepasswordconnectsdk.models.Item(
+                title=item_id,
+                category="SECURE_NOTE",
+                fields=[Field(value=json.dumps(body),
+                              purpose="NOTES")]
+            )
 
             stored_item = self.client.create_item(vault_id=self.notes_vault_id, item=created_item)
 
@@ -140,7 +138,7 @@ class GenerateHandler(tornado.web.RequestHandler):
         self.set_status(status_code)
         response_error = {"status": status_code, "title": title, "message": message}
         self.finish(response_error)
-        
+
     def post(self):
         try:
             data = tornado.escape.json_decode(self.request.body)
@@ -167,10 +165,10 @@ class GenerateHandler(tornado.web.RequestHandler):
             # Will return either the stored_item or false - false will error on next step and go to except
             stored_item, exp_time = one_connect_instance.create_item(vault_id, item_id, expiry_time)
             self.finish({
-                    "id": stored_item.id,
-                    "expiry_time": exp_time,
-                    "creation_time": int(stored_item.created_at.timestamp()),
-                })
+                "id": stored_item.id,
+                "expiry_time": exp_time,
+                "creation_time": int(stored_item.created_at.timestamp()),
+            })
 
         except ValueError as e:
             self.write_error(status_code=400, message=str(e))
@@ -251,6 +249,7 @@ def make_app():
     )
     return app
 
+
 def main():
     app = make_app()
     server = tornado.httpserver.HTTPServer(app)
@@ -264,9 +263,9 @@ def main():
     tornado.ioloop.PeriodicCallback(one_connect_instance.delete_expired, delete_timer).start()
     asyncio.get_event_loop().run_forever()
 
+
 one_connect_instance = OneConnectInterface()
 
 if __name__ == "__main__":
     AsyncIOMainLoop().install()
     main()
-
